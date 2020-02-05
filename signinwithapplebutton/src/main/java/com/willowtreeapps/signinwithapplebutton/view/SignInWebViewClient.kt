@@ -27,6 +27,7 @@ internal class SignInWebViewClient(
     }
 
     private fun isUrlOverridden(view: WebView?, url: Uri?): Boolean {
+	Log.d(SIGN_IN_WITH_APPLE_LOG_TAG, url.toString())
         return when {
             url == null -> {
                 false
