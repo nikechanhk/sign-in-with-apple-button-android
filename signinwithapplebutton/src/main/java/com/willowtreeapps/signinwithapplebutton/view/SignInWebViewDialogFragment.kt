@@ -65,7 +65,7 @@ internal class SignInWebViewDialogFragment : DialogFragment() {
 
         webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-                Log.d(SIGN_IN_WITH_APPLE_LOG_TAG, "webview override")
+                Log.d(SIGN_IN_WITH_APPLE_LOG_TAG, "Web view override")
                 return isUrlOverridden(webView, Uri.parse(url))
             }
         }
