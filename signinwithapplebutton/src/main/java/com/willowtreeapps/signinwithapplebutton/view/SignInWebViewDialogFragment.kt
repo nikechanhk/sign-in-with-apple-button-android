@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.fragment.app.DialogFragment
 import com.willowtreeapps.signinwithapplebutton.R
 import com.willowtreeapps.signinwithapplebutton.SignInWithAppleResult
@@ -119,7 +120,7 @@ internal class SignInWebViewDialogFragment : DialogFragment() {
                     codeParameter == null -> {
                         this.onCallback(SignInWithAppleResult.Failure(IllegalArgumentException("code not returned")))
                     }
-                    stateParameter != attempt.state -> {
+                    stateParameter != authenticationAttempt.state -> {
                         this.onCallback(SignInWithAppleResult.Failure(IllegalArgumentException("state does not match")))
                     }
                     else -> {
