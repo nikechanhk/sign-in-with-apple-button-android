@@ -1,5 +1,6 @@
 package com.willowtreeapps.signinwithapplebutton.view
 
+import android.net.Uri
 import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.os.Bundle
@@ -61,7 +62,11 @@ internal class SignInWebViewDialogFragment : DialogFragment() {
             }
         }
 
-        webView.webViewClient = SignInWebViewClient(authenticationAttempt, ::onCallback)
+        webView.webViewClient = object : WebViewClient() {
+            override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+                return this.shouldOverrideUrlLoading(webView, Uri.parse(url))
+            }
+        }
 
         if (savedInstanceState != null) {
             savedInstanceState.getBundle(WEB_VIEW_KEY)?.run {
@@ -93,6 +98,42 @@ internal class SignInWebViewDialogFragment : DialogFragment() {
     override fun onCancel(dialog: DialogInterface?) {
         super.onCancel(dialog)
         onCallback(SignInWithAppleResult.Cancel)
+    }
+
+    private fun isUrlOverridden(view: WebView?, url: Uri?): Boolean {
+        Log.d(SIGN_IN_WITH_APPLE_LOG_TAG, url.toString())
+        return when {
+            url == null -> {
+                false
+            }
+            url.toString().contains("appleid.apple.com") -> {
+                view?.loadUrl(url.toString())
+                true
+            }
+            url.toString().contains("appleid.apple.com") == false -> {
+                Log.d(SIGN_IN_WITH_APPLE_LOG_TAG, "Web view was forwarded to redirect URI")
+                callback(SignInWithAppleResult.Failure(IllegalArgumentException("code not returned")))
+                val codeParameter = url.getQueryParameter("code")
+                val stateParameter = url.getQueryParameter("state")
+
+                when {
+                    codeParameter == null -> {
+                        this.onCallback(SignInWithAppleResult.Failure(IllegalArgumentException("code not returned")))
+                    }
+                    stateParameter != attempt.state -> {
+                        this.onCallback(SignInWithAppleResult.Failure(IllegalArgumentException("state does not match")))
+                    }
+                    else -> {
+                        this.onCallback(SignInWithAppleResult.Success(codeParameter))
+                    }
+                }
+
+                true
+            }
+            else -> {
+                false
+            }
+        }
     }
 
     // SignInWithAppleCallback
