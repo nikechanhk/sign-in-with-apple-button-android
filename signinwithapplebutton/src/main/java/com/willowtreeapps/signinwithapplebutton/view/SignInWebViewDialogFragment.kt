@@ -62,7 +62,7 @@ internal class SignInWebViewDialogFragment : DialogFragment() {
                 javaScriptCanOpenWindowsAutomatically = true
             }
         }
-
+        Log.d(SIGN_IN_WITH_APPLE_LOG_TAG, "Web view init")
         webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
                 Log.d(SIGN_IN_WITH_APPLE_LOG_TAG, "Web view override")
@@ -113,21 +113,7 @@ internal class SignInWebViewDialogFragment : DialogFragment() {
                 true
             }
             url.toString().contains("appleid.apple.com") == false -> {
-                Log.d(SIGN_IN_WITH_APPLE_LOG_TAG, "Web view was forwarded to redirect URI")
-                val codeParameter = url.getQueryParameter("code")
-                val stateParameter = url.getQueryParameter("state")
-
-                when {
-                    codeParameter == null -> {
-                        this.onCallback(SignInWithAppleResult.Failure(IllegalArgumentException("code not returned")))
-                    }
-                    stateParameter != authenticationAttempt.state -> {
-                        this.onCallback(SignInWithAppleResult.Failure(IllegalArgumentException("state does not match")))
-                    }
-                    else -> {
-                        this.onCallback(SignInWithAppleResult.Success(codeParameter))
-                    }
-                }
+                dialog?.dismiss()
 
                 true
             }
