@@ -48,6 +48,18 @@ internal class SignInWebViewDialogFragment : DialogFragment() {
         super.onCreate(savedInstanceState)
         authenticationAttempt = arguments?.getParcelable(AUTHENTICATION_ATTEMPT_KEY)!!
         setStyle(STYLE_NORMAL, R.style.sign_in_with_apple_button_DialogTheme)
+
+        webViewIfCreated?.webViewClient = object : WebViewClient() {
+//            override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+//                Log.d(SIGN_IN_WITH_APPLE_LOG_TAG, "Web view override")
+//                return isUrlOverridden(webView, Uri.parse(url))
+//            }
+
+            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+                Log.d(SIGN_IN_WITH_APPLE_LOG_TAG, "Web view override")
+                return isUrlOverridden(view, request?.url)
+            }
+        }
     }
 
     override fun onCreateView(
