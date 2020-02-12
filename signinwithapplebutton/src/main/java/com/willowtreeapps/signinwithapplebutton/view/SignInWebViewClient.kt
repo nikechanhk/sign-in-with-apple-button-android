@@ -21,10 +21,10 @@ internal class SignInWebViewClient(
         return isUrlOverridden(view, Uri.parse(url))
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
-    override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-        return isUrlOverridden(view, request?.url)
-    }
+   // @RequiresApi(Build.VERSION_CODES.N)
+   // override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+   //     return isUrlOverridden(view, request?.url)
+   // }
 
     private fun isUrlOverridden(view: WebView?, url: Uri?): Boolean {
 	Log.d(SIGN_IN_WITH_APPLE_LOG_TAG, url.toString())
