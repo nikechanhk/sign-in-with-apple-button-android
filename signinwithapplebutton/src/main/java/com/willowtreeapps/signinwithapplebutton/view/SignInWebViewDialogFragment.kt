@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.fragment.app.DialogFragment
@@ -64,9 +65,14 @@ internal class SignInWebViewDialogFragment : DialogFragment() {
         }
         Log.d(SIGN_IN_WITH_APPLE_LOG_TAG, "Web view init")
         webView.webViewClient = object : WebViewClient() {
-            override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+//            override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+//                Log.d(SIGN_IN_WITH_APPLE_LOG_TAG, "Web view override")
+//                return isUrlOverridden(webView, Uri.parse(url))
+//            }
+
+            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
                 Log.d(SIGN_IN_WITH_APPLE_LOG_TAG, "Web view override")
-                return isUrlOverridden(webView, Uri.parse(url))
+                return isUrlOverridden(view, request?.url)
             }
         }
 
