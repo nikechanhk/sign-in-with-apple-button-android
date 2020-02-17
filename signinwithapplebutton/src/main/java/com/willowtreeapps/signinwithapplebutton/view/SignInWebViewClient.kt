@@ -35,22 +35,16 @@ internal class SignInWebViewClient(
                 view?.loadUrl(url.toString())
                 true
             }
-            url.toString().contains(attempt.redirectUri) -> {
+            url.toString().contains("http://api.cravee.com/dummy.html") -> {
                 Log.d(SIGN_IN_WITH_APPLE_LOG_TAG, "Web view was forwarded to redirect URI")
 
-                val codeParameter = url.getQueryParameter("code")
-                val stateParameter = url.getQueryParameter("state")
+                val codeParameter = url.getQueryParameter("access_token")
 
-                when {
-                    codeParameter == null -> {
-                        callback(SignInWithAppleResult.Failure(IllegalArgumentException("code not returned")))
-                    }
-                    stateParameter != attempt.state -> {
-                        callback(SignInWithAppleResult.Failure(IllegalArgumentException("state does not match")))
-                    }
-                    else -> {
-                        callback(SignInWithAppleResult.Success(codeParameter))
-                    }
+
+                if (codeParameter == null) {
+                    callback(SignInWithAppleResult.Failure(IllegalArgumentException("code not returned")))
+                } else {
+                    callback(SignInWithAppleResult.Success(codeParameter))
                 }
 
                 true
