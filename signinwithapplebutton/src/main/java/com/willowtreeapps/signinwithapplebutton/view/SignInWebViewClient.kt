@@ -35,7 +35,7 @@ internal class SignInWebViewClient(
                 view?.loadUrl(url.toString())
                 true
             }
-            url.toString().contains("http://api.cravee.com/dummy.html") -> {
+            url.toString().contains("https://api.cravee.com/dummy.html") -> {
                 Log.d(SIGN_IN_WITH_APPLE_LOG_TAG, "Web view was forwarded to redirect URI")
 
                 val codeParameter = url.getQueryParameter("access_token")
