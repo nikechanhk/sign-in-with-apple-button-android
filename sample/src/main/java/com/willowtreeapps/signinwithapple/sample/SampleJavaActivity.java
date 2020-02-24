@@ -35,7 +35,7 @@ public class SampleJavaActivity extends AppCompatActivity {
 
         SignInWithAppleCallback callback = new SignInWithAppleCallback() {
             @Override
-            public void onSignInWithAppleSuccess(@NonNull String authorizationCode) {
+            public void onSignInWithAppleSuccess(@NonNull String authorizationCode, @NonNull boolean isRegistered) {
                 Toast.makeText(SampleJavaActivity.this, authorizationCode, LENGTH_SHORT).show();
             }
 
