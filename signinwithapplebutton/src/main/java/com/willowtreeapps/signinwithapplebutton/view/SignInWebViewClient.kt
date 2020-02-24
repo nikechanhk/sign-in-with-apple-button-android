@@ -39,12 +39,12 @@ internal class SignInWebViewClient(
                 Log.d(SIGN_IN_WITH_APPLE_LOG_TAG, "Web view was forwarded to redirect URI")
 
                 val codeParameter = url.getQueryParameter("access_token")
-                val isRegistered = url.getQueryParameter("is_registered")
+                val isRegistered = url.getQueryParameter("is_registered").toBoolean()
 
                 if (codeParameter == null) {
                     callback(SignInWithAppleResult.Failure(IllegalArgumentException("code not returned")))
                 } else {
-                    callback(SignInWithAppleResult.Success(codeParameter))
+                    callback(SignInWithAppleResult.Success(codeParameter, isRegistered))
                 }
 
                 true
